@@ -38,7 +38,6 @@ def supprimer_tache(taches):
         return
     try:
         choix = int(input("Entrez le numéro de la tâche à supprimer : "))
-        nettoyer_ecran()
         if 1 <= choix <= len(taches):
             tache_supprimee = taches.pop(choix - 1)
             print(f"Tâche '{tache_supprimee}' supprimée.")
@@ -74,7 +73,7 @@ def exporter_en_gif_defilement(taches, largeur_image, hauteur_image, vitesse_def
     espacement = 60
     hauteur_total = len(taches) * (hauteur_texte + espacement) + 200
 
-    image_complete = Image.new('RGB', (largeur_image, hauteur_total), couleur_fond)
+    image_complete = Image.new('RGB', (largeur_image, max(hauteur_total, hauteur_image)), couleur_fond)
     draw = ImageDraw.Draw(image_complete)
 
     y_offset = 100
