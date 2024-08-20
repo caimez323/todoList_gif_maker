@@ -57,7 +57,7 @@ def charger_taches():
             return [ligne.strip() for ligne in fichier.readlines()]
     return []
 
-def exporter_en_gif_defilement(taches, largeur_image, hauteur_image, vitesse_defilement, taille_police, couleur_fond, couleur_texte):
+def exporter_en_gif_defilement(taches, largeur_image, hauteur_image, vitesse_defilement, taille_police, couleur_fond, couleur_texte, espacement):
     nettoyer_ecran()
     if not taches:
         print("Aucune tâche à exporter.")
@@ -68,9 +68,7 @@ def exporter_en_gif_defilement(taches, largeur_image, hauteur_image, vitesse_def
     except IOError:
         font = ImageFont.load_default()
 
-    # Calculer la hauteur nécessaire pour contenir toutes les tâches
     hauteur_texte = font.getbbox("Test")[3]
-    espacement = 60
     hauteur_total = len(taches) * (hauteur_texte + espacement) + 200
 
     image_complete = Image.new('RGB', (largeur_image, max(hauteur_total, hauteur_image)), couleur_fond)
@@ -105,8 +103,9 @@ def modifier_parametres():
     taille_police = int(input("Taille de la police (par défaut 100) : ") or 100)
     couleur_fond = tuple(map(int, input("Couleur de fond (R G B, par défaut 255 255 255) : ").split() or (255, 255, 255)))
     couleur_texte = tuple(map(int, input("Couleur du texte (R G B, par défaut 0 0 0) : ").split() or (0, 0, 0)))
+    espacement = int(input("Espacement entre les tâches (en pixels, par défaut 60) : ") or 60)
     
-    return largeur_image, hauteur_image, vitesse_defilement, taille_police, couleur_fond, couleur_texte
+    return largeur_image, hauteur_image, vitesse_defilement, taille_police, couleur_fond, couleur_texte, espacement
 
 def main():
     taches = charger_taches()
@@ -117,6 +116,7 @@ def main():
     taille_police = 100
     couleur_fond = (255, 255, 255)
     couleur_texte = (0, 0, 0)
+    espacement = 60
 
     while True:
         nettoyer_ecran()
@@ -135,10 +135,10 @@ def main():
             sauvegarder_taches(taches)
             input("\nAppuyez sur Entrée pour revenir au menu.")
         elif choix == "4":
-            exporter_en_gif_defilement(taches, largeur_image, hauteur_image, vitesse_defilement, taille_police, couleur_fond, couleur_texte)
+            exporter_en_gif_defilement(taches, largeur_image, hauteur_image, vitesse_defilement, taille_police, couleur_fond, couleur_texte, espacement)
             input("\nAppuyez sur Entrée pour revenir au menu.")
         elif choix == "5":
-            largeur_image, hauteur_image, vitesse_defilement, taille_police, couleur_fond, couleur_texte = modifier_parametres()
+            largeur_image, hauteur_image, vitesse_defilement, taille_police, couleur_fond, couleur_texte, espacement = modifier_parametres()
             input("\nParamètres modifiés. Appuyez sur Entrée pour revenir au menu.")
         elif choix == "6":
             sauvegarder_taches(taches)
